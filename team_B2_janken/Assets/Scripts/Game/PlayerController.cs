@@ -33,7 +33,7 @@ public class PlayerScript : MonoBehaviour
         // 接続されているコントローラ取得
         var gamepads = Gamepad.all;
         var index = (int)playerIndex;
-        if (gamepads.Count < index)
+        if (gamepads.Count <= index)
         {
             Debug.LogWarning($"プレイヤーに割り当てるゲームコントローラが見つかりません {index}");
             return;
