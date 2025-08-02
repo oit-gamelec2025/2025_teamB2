@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class SettingManager : MonoBehaviour
 {
-    public int[] janken = new int[] { 0, 0, 0 }; //要素（０）がグー、要素（１）がチョキ、要素（２）がパー
+    public static int[] janken = new int[] { 0, 0, 0 }; //要素（０）がグー、要素（１）がチョキ、要素（２）がパー
     private int StartFlag = 0;
 
     void Start()
