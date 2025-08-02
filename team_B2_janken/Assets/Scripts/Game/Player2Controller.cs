@@ -1,66 +1,30 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.InputSystem; // 新Input System
 
-// クラス名だけ Player2Controller に変更
-public class Player2Controller : MonoBehaviour
+public class Player2Script : MonoBehaviour
 {
-    public float walkSpeed = 5f;
-    public float dashSpeed = 10f;
-    public float jumpForce = 5f;
-    public float rotationSpeed = 200f;
+    Rigidbody player2RigidBody;
+    float speed = 3.0f;
+    Vector2 moveInput; // 左スティックの入力を保存する
+    public GameObject Camera;
+    private Vector3 _velocity;
 
-    private Rigidbody rb;
-    private bool isGrounded;
-    private Transform cameraTransform;
-
-    private Vector2 moveInput;
-    private Vector2 lookInput;
-    private bool isDash;
-
-    void Awake()
+    void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        cameraTransform = GetComponentInChildren<Camera>().transform;
+        player2RigidBody = GetComponent<Rigidbody>();
     }
 
-    void FixedUpdate()
+    private void OnMove(InputValue value)
     {
-        float currentSpeed = isDash ? dashSpeed : walkSpeed;
-        
-        Vector3 cameraForward = Vector3.Scale(cameraTransform.forward, new Vector3(1, 0, 1)).normalized;
-        Vector3 finalMoveDirection = cameraForward * moveInput.y + cameraTransform.right * moveInput.x;
+        var axis = value.Get<Vector2>();
 
-        if (finalMoveDirection != Vector3.zero)
-        {
-            transform.forward = Vector3.Slerp(transform.forward, finalMoveDirection, Time.fixedDeltaTime * 10f);
-        }
+        // 移動速度を保持
+        _velocity = new Vector3(axis.x, 0, axis.y);
+    }
 
-        rb.velocity = new Vector3(finalMoveDirection.x * currentSpeed, rb.velocity.y, finalMoveDirection.z * currentSpeed);
-        
-        transform.Rotate(Vector3.up * lookInput.x * rotationSpeed * Time.fixedDeltaTime);
-    }
-    
-    public void OnMove(InputValue value)
+    private void Update()
     {
-        moveInput = value.Get<Vector2>();
-    }
-    
-    public void OnLook(InputValue value)
-    {
-        lookInput = value.Get<Vector2>();
-    }
-    
-    public void OnJump(InputValue value)
-    {
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, 1.1f);
-        if (value.isPressed && isGrounded)
-        {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        }
-    }
-    
-    public void OnDash(InputValue value)
-    {
-        isDash = value.isPressed;
+        // オブジェクト移動
+        transform.position += _velocity * Time.deltaTime;
     }
 }
