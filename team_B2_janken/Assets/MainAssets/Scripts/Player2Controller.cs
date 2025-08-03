@@ -1,30 +1,31 @@
-using UnityEngine;
-using UnityEngine.InputSystem; // VInput System
+/*using UnityEngine;
+using UnityEngine.InputSystem; // æ–°Input System
 
-public class Player1Script : MonoBehaviour
+public class Player2Script : MonoBehaviour
 {
-    Rigidbody player1RigidBody;
+    Rigidbody player2RigidBody;
     float speed = 3.0f;
-    Vector2 moveInput; // ¶ƒXƒeƒBƒbƒN‚Ì“ü—Í‚ğ•Û‘¶‚·‚é
+    Vector2 moveInput; // å·¦ã‚¹ãƒ†ã‚£ãƒƒã‚¯ã®å…¥åŠ›ã‚’ä¿å­˜ã™ã‚‹
     public GameObject Camera;
     private Vector3 _velocity;
 
     void Start()
     {
-        player1RigidBody = GetComponent<Rigidbody>();
+        player2RigidBody = GetComponent<Rigidbody>();
     }
 
     private void OnMove(InputValue value)
     {
         var axis = value.Get<Vector2>();
 
-        // ˆÚ“®‘¬“x‚ğ•Û
+        // ç§»å‹•é€Ÿåº¦ã‚’ä¿æŒ
         _velocity = new Vector3(axis.x, 0, axis.y);
     }
 
     private void Update()
     {
-        // ƒIƒuƒWƒFƒNƒgˆÚ“®
+        // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç§»å‹•
         transform.position += _velocity * Time.deltaTime;
     }
 }
+*/
