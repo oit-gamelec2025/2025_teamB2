@@ -1,4 +1,4 @@
-using UnityEngine;
+/*using UnityEngine;
 using UnityEngine.InputSystem; // 新Input System
 
 public class Player2Script : MonoBehaviour
@@ -28,3 +28,4 @@ public class Player2Script : MonoBehaviour
         transform.position += _velocity * Time.deltaTime;
     }
 }
+*/
