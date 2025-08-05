@@ -1,76 +1,116 @@
-using System.Collections;
+Ôªøusing System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public int[] janken = new int[] { 0, 0, 0 }; //óvëfÅiÇOÅjÇ™ÉOÅ[ÅAóvëfÅiÇPÅjÇ™É`ÉáÉLÅAóvëfÅiÇQÅjÇ™ÉpÅ[
-    private int StartFlag = 0;
     public GameObject[] Player1UI = new GameObject[] {};
     public GameObject[] Players = new GameObject[] {};
+    public GameObject StartText;
+
+    string[] hands = new string[] { "Rock", "Scissors", "Paper" };
 
     public GameObject Resporn;
 
-    //UIÇÃïœêî
-    private int score = 0;
+    //Ê≠¶Âô®
+    public GameObject Rock;
+    public GameObject Scissors;
+    public GameObject Paper;
+
+
+    //UI„ÅÆÂ§âÊï∞
+    int score = 0;
     public Text ScoreText_1;
+
+    //Âà∂ÈôêÊôÇÈñì
+    float totaltime = 6;
+    int retotaltime = 0;
+    public Text TimerText;
+    int ChoseFlag = 0;
 
     void Start()
     {
-        
+        Rock.SetActive(false);
+        Scissors.SetActive(false);
+        Paper.SetActive(false);
     }
 
     void Update()
     {
-        if (StartFlag == 1)
+        //Âà∂ÈôêÊôÇÈñìÂá¶ÁêÜ
+        totaltime -= Time.deltaTime;
+        retotaltime = (int)totaltime;
+        if (retotaltime > -1)
         {
-            if (janken[0] == 1)
+            TimerText.text = retotaltime.ToString();
+            if(retotaltime == 0 && ChoseFlag == 0)
             {
-                Debug.Log("ê›íËÇ≥ÇÍÇΩéËÅFÉOÅ[");
-                Players[0].gameObject.tag = "Rock";
-                StartFlag = 0;
+                ChoseFlag = 1;
+                totaltime = 61;
+                StartText.SetActive(true);
+                Player1UI[0].SetActive(false);
+                Player1UI[1].SetActive(false);
+                Player1UI[2].SetActive(false);
+                int num = Random.Range(0, 3); // 0‰ª•‰∏ä10Êú™Ê∫Ä„ÅÆÊï¥Êï∞Ôºà0„Äú9Ôºâ
+                Players[0].gameObject.tag = hands[num];
+                if(num == 0)
+                {
+                    Rock.SetActive(true);
+                }
+                else if(num == 1)
+                {
+                    Scissors.SetActive(true);
+                }
+                else if(num == 2)
+                {
+                    Paper.SetActive(true);
+                }
             }
-            else if (janken[1] == 1)
-            {
-                Debug.Log("ê›íËÇ≥ÇÍÇΩéËÅFÉ`ÉáÉL");
-                Players[0].gameObject.tag = "Scissors";
-                StartFlag = 0;
-            }
-            else if (janken[2] == 1)
-            {
-                Debug.Log("ê›íËÇ≥ÇÍÇΩéËÅFÉpÅ[");
-                Players[0].gameObject.tag = "Paper";
-                StartFlag = 0;
-            }
+        }
+        if(totaltime < 59)
+        {
+            StartText.SetActive(false);
         }
     }
 
     public void OnRock01()
     {
-        janken[0] = 1;
-        StartFlag = 1;
+        Debug.Log("Ë®≠ÂÆö„Åï„Çå„ÅüÊâãÔºö„Ç∞„Éº");
+        Players[0].gameObject.tag = "Rock";
+        totaltime = 61;
+        StartText.SetActive(true);
         Player1UI[0].SetActive(false);
         Player1UI[1].SetActive(false);
         Player1UI[2].SetActive(false);
+        Rock.SetActive(true);
+        ChoseFlag = 1;
     }
 
     public void OnScissors01()
     {
-        janken[1] = 1;
-        StartFlag = 1;
+        Debug.Log("Ë®≠ÂÆö„Åï„Çå„ÅüÊâãÔºö„ÉÅ„Éß„Ç≠");
+        Players[0].gameObject.tag = "Scissors";
+        totaltime = 61;
+        StartText.SetActive(true);
         Player1UI[0].SetActive(false);
         Player1UI[1].SetActive(false);
         Player1UI[2].SetActive(false);
+        Scissors.SetActive(true);
+        ChoseFlag = 1;
     }
 
     public void OnPaper01()
     {
-        janken[2] = 1;
-        StartFlag = 1;
+        Debug.Log("Ë®≠ÂÆö„Åï„Çå„ÅüÊâãÔºö„Éë„Éº");
+        Players[0].gameObject.tag = "Paper";
+        totaltime = 61;
+        StartText.SetActive(true);
         Player1UI[0].SetActive(false);
         Player1UI[1].SetActive(false);
         Player1UI[2].SetActive(false);
+        Paper.SetActive(true);
+        ChoseFlag = 1;
     }
 
     public void AddScore_1(int num)
@@ -82,6 +122,6 @@ public class GameManager : MonoBehaviour
     public void Resporn_test()
     {
         Players[0].transform.position = Resporn.transform.position;
-        Players[0].transform.rotation = Resporn.transform.rotation; // å¸Ç´Ç‡çáÇÌÇπÇΩÇ¢èÍçá
+        Players[0].transform.rotation = Resporn.transform.rotation; // Âêë„Åç„ÇÇÂêà„Çè„Åõ„Åü„ÅÑÂ†¥Âêà
     }
 }

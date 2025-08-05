@@ -8,7 +8,16 @@ public class Player1Script : MonoBehaviour
     //プレイヤー操作関連変数
     Rigidbody player1RigidBody;
     public GameObject Camera;
-    float speed = 6.0f;
+    public GameObject Born; //プレイヤー方向
+    float speed = 20.0f;
+
+    //あいこで転んでから起き上がりの時間
+    float totaltime = 1.5f;
+    int retime = 0;
+
+    //Animatorとの連携
+    Animator animator;
+    int DrawFlag = 0;
 
     //GameManagerと連携
     public GameObject gameManager;
@@ -16,7 +25,7 @@ public class Player1Script : MonoBehaviour
     void Start()
     {
         player1RigidBody = GetComponent<Rigidbody>();
-        
+        animator = GetComponent<Animator>(); // Animatorコンポーネント取得
     }
 
     private void Update()
@@ -27,25 +36,58 @@ public class Player1Script : MonoBehaviour
         if (Input.GetKey(KeyCode.W))
         {
             move += transform.forward;
+            Born.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
         }
         //Sキーで後ろ移動
         if (Input.GetKey(KeyCode.S))
         {
             move -= transform.forward;
+            Born.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
         }
         //Dキーで右移動
         if (Input.GetKey(KeyCode.D))
         {
             move += transform.right;
+            Born.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
+            if(Input.GetKey(KeyCode.W))
+            {
+                Born.transform.rotation = Quaternion.Euler(0f, 45f, 0f);
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                Born.transform.rotation = Quaternion.Euler(0f, 135f, 0f);
+            }
         }
         //Aキーで左移動
         if (Input.GetKey(KeyCode.A))
         {
             move -= transform.right;
+            Born.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
+            if (Input.GetKey(KeyCode.W))
+            {
+                Born.transform.rotation = Quaternion.Euler(0f, -45f, 0f);
+            }
+            if (Input.GetKey(KeyCode.S))
+            {
+                Born.transform.rotation = Quaternion.Euler(0f, -135f, 0f);
+            }
         }
 
         // ノーマライズして一定速度に保つ
-        player1RigidBody.velocity = move.normalized * speed;
+        player1RigidBody.velocity = move.normalized * speed; //Vextor型だから直で渡せない
+        float MoveSpeed = player1RigidBody.velocity.magnitude; //velocityの大きさを数値に変える
+        animator.SetFloat("Walk", MoveSpeed);
+
+        if(DrawFlag == 1)
+        {
+            totaltime -= Time.deltaTime;
+            retime = (int)totaltime;
+            if (retime < 0)
+            {
+                DrawFlag = 0;
+                animator.SetInteger("DrawFlag", DrawFlag);
+            }
+        }
     }
 
     void OnCollisionEnter(Collision other) //当たり判定での処理
@@ -76,7 +118,7 @@ public class Player1Script : MonoBehaviour
         if (gameObject.tag == "Rock" && other.gameObject.tag == "Paper")
         {
             GameManager script01 = gameManager.GetComponent<GameManager>(); //GameManaerにアタッチしているスクリプトを取得
-            script01.Resporn_test();
+            script01.Resporn_test();//仮リスポーン
             Debug.Log("Lose");
         }
         if (gameObject.tag == "Paper" && other.gameObject.tag == "Scissors")
@@ -91,6 +133,10 @@ public class Player1Script : MonoBehaviour
         //じゃんけんでドローになるときの処理
         if(gameObject.tag == other.gameObject.tag)
         {
+            DrawFlag = 1;
+            animator.SetInteger("DrawFlag", DrawFlag);
+            totaltime = 3;
+            retime = 0;
             Debug.Log("Draw");
         }
     }
