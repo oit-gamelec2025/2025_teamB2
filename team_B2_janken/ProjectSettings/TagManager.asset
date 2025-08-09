@@ -8,6 +8,9 @@ TagManager:
   - Paper
   - Scissors
   - bottom
+  - Hand_Scissors
+  - Hand_Paper
+  - Hand_Rock
   layers:
   - Default
   - TransparentFX
