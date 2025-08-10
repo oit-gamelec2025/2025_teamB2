@@ -30,7 +30,7 @@ public class RobotController : MonoBehaviour
 
         // Bボタン（joystick button 1）が押されたときに突進
         // Input ManagerでDashという名前で設定した場合
-        if (Input.GetButtonDown("Dash") && canDash)
+        if (Input.GetButtonDown("Dash") && canDash )
         {
             StartDash();
         }
