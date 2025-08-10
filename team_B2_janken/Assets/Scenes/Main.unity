@@ -2064,6 +2064,7 @@ GameObject:
   - component: {fileID: 394753681}
   - component: {fileID: 394753683}
   - component: {fileID: 394753684}
+  - component: {fileID: 394753685}
   m_Layer: 0
   m_Name: Stage
   m_TagString: Untagged
@@ -2205,6 +2206,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 12.649536, y: 177.13472, z: 153.50864}
   m_Center: {x: -101.93504, y: 82.40679, z: -70.6465}
+--- !u!65 &394753685
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 394753679}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 19.330109, y: 20.689438, z: 21.661964}
+  m_Center: {x: -71.767075, y: 65.700356, z: -111.36101}
 --- !u!1 &397643048
 GameObject:
   m_ObjectHideFlags: 0
@@ -3867,6 +3889,7 @@ GameObject:
   - component: {fileID: 666823020}
   - component: {fileID: 666823021}
   - component: {fileID: 666823022}
+  - component: {fileID: 666823023}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3973,6 +3996,14 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!81 &666823023
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 666823019}
+  m_Enabled: 1
 --- !u!1001 &668796937
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5735,6 +5766,7 @@ GameObject:
   - component: {fileID: 857849096}
   - component: {fileID: 857849095}
   - component: {fileID: 857849101}
+  - component: {fileID: 857849102}
   m_Layer: 0
   m_Name: Player02
   m_TagString: Player
@@ -5846,10 +5878,9 @@ MonoBehaviour:
   RockSound: {fileID: 8300000, guid: f721d78b182b2024a8394f0a244d9ed7, type: 3}
   ScissorsSound: {fileID: 8300000, guid: e27f99997539e1542a95c6d0cb4ef447, type: 3}
   PaperSound: {fileID: 8300000, guid: 1e58a9d75b8dccf409a5317e73dca202, type: 3}
-  LoseSound: {fileID: 0}
-  DrawSound: {fileID: 0}
   Camera: {fileID: 0}
   Born: {fileID: 871398127}
+  playerIndex: 1
   gameManager: {fileID: 666823019}
 --- !u!82 &857849101
 AudioSource:
@@ -5947,6 +5978,37 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &857849102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 857849094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: e374788df4aab7b43bbf86854502b88d,
+    type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player2
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1001 &871398126
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10836,6 +10898,7 @@ GameObject:
   - component: {fileID: 1911900945}
   - component: {fileID: 1911900946}
   - component: {fileID: 1911900947}
+  - component: {fileID: 1911900948}
   m_Layer: 0
   m_Name: Player01
   m_TagString: Player
@@ -10876,10 +10939,9 @@ MonoBehaviour:
   RockSound: {fileID: 8300000, guid: f721d78b182b2024a8394f0a244d9ed7, type: 3}
   ScissorsSound: {fileID: 8300000, guid: e27f99997539e1542a95c6d0cb4ef447, type: 3}
   PaperSound: {fileID: 8300000, guid: 1e58a9d75b8dccf409a5317e73dca202, type: 3}
-  LoseSound: {fileID: 0}
-  DrawSound: {fileID: 0}
   Camera: {fileID: 0}
   Born: {fileID: 275156465}
+  playerIndex: 0
   gameManager: {fileID: 666823019}
 --- !u!54 &1911900944
 Rigidbody:
@@ -11048,6 +11110,37 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1911900948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1911900941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: e05c69e372cb98141a144f4ce67eac94,
+    type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Player1
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!4 &1917143555 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6208010189527666727, guid: 5fa5c6c96badfb04bba2d15215a8a7f4,

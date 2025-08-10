@@ -6,13 +6,16 @@ using System.Collections.Generic;
 
 public class Player1Script : MonoBehaviour
 {
+    //移動関係
+    private Vector2 moveInput; // ★これを追加: スティックの入力値を保持する
+
     //SE
     private AudioSource audioSource;
     public AudioClip RockSound;
     public AudioClip ScissorsSound;
     public AudioClip PaperSound;
-    public AudioClip LoseSound;
-    public AudioClip DrawSound;
+    //public AudioClip LoseSound;
+    //public AudioClip DrawSound;
 
     //プレイヤー操作関連変数
     Rigidbody player1RigidBody;
@@ -20,6 +23,14 @@ public class Player1Script : MonoBehaviour
     public GameObject Born; //プレイヤー方向
     float speed = 20.0f;
     int respron = 0;
+
+    private PlayerInput playerInput;
+    public enum PlayerIndex
+    {
+        Player1 = 0, // 1P
+        Player2 = 1  // 2P
+    };
+    [Header("プレイヤー番号"), SerializeField] PlayerIndex playerIndex = PlayerIndex.Player1;
 
     //あいこで転んでから起き上がりの時間
     float totaltime = 0f;
@@ -43,6 +54,7 @@ public class Player1Script : MonoBehaviour
     {
         player1RigidBody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>(); // Animatorコンポーネント取得
+        playerInput = GetComponent<PlayerInput>();
 
         // パフォーマンス向上のため、GameManagerのスクリプトを一度だけ取得してキャッシュしておく
         if (gameManager != null)
@@ -51,6 +63,23 @@ public class Player1Script : MonoBehaviour
         }
 
         audioSource = gameObject.AddComponent<AudioSource>(); //変数「audioSource」にAudioSourceコンポネントを入れます
+
+        var gamepads = Gamepad.all;
+        var index = (int)playerIndex;
+
+        if (gamepads.Count < index)
+        {
+            Debug.LogWarning($"プレイヤーに割り当てるゲームコントローラが見つかりません {index}");
+            return;
+        }
+
+        // 接続されているコントローラーをプレイヤー入力へ割り当て
+        playerInput.SwitchCurrentControlScheme(gamepads[index]);
+    }
+
+    public void OnMove(InputValue value)
+    {
+        moveInput = value.Get<Vector2>();
     }
 
     // Rigidbodyを扱う処理はFixedUpdateで行うのが推奨されます
@@ -65,58 +94,35 @@ public class Player1Script : MonoBehaviour
             return;
         }
 
-        Vector3 move = Vector3.zero;
+        // ▼▼▼【ここからが修正箇所です】▼▼▼
 
-        //Wキーで前移動
-        if (Input.GetKey(KeyCode.W))
+        // スティックの入力(moveInput)を、XZ平面の3Dベクトルに変換
+        Vector3 move = new Vector3(moveInput.x, 0f, moveInput.y);
+
+        // スティックがわずかでも倒されている場合のみ処理
+        if (move.magnitude > 0.1f) // 0.1fはデッドゾーン。スティックの遊びを無視する閾値
         {
-            move += transform.forward;
-            Born.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+            // スティックを倒した方向にキャラクターの向き（Bornオブジェクト）をスムーズに向ける
+            Born.transform.rotation = Quaternion.LookRotation(move);
         }
-        //Sキーで後ろ移動
-        if (Input.GetKey(KeyCode.S))
+        else
         {
-            move -= transform.forward;
-            Born.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
-        }
-        //Dキーで右移動
-        if (Input.GetKey(KeyCode.D))
-        {
-            move += transform.right;
-            Born.transform.rotation = Quaternion.Euler(0f, 90f, 0f);
-            if (Input.GetKey(KeyCode.W))
-            {
-                Born.transform.rotation = Quaternion.Euler(0f, 45f, 0f);
-            }
-            if (Input.GetKey(KeyCode.S))
-            {
-                Born.transform.rotation = Quaternion.Euler(0f, 135f, 0f);
-            }
-        }
-        //Aキーで左移動
-        if (Input.GetKey(KeyCode.A))
-        {
-            move -= transform.right;
-            Born.transform.rotation = Quaternion.Euler(0f, -90f, 0f);
-            if (Input.GetKey(KeyCode.W))
-            {
-                Born.transform.rotation = Quaternion.Euler(0f, -45f, 0f);
-            }
-            if (Input.GetKey(KeyCode.S))
-            {
-                Born.transform.rotation = Quaternion.Euler(0f, -135f, 0f);
-            }
+            // スティックが倒されていなければ移動量を0にする
+            move = Vector3.zero;
         }
 
-        // ▼▼▼【重要】ここが修正点です ▼▼▼
-        // 水平方向の速度を計算し、現在のY軸速度は維持する
+        // 移動ベクトルを正規化（長さを1に）し、スピードを掛けて最終的な速度を計算
         Vector3 newVelocity = move.normalized * speed;
+        // Y軸（垂直方向）の速度は、重力などの影響を維持するために現在の値を保持
         newVelocity.y = player1RigidBody.velocity.y;
         player1RigidBody.velocity = newVelocity;
-        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
 
+        // アニメーターに歩行速度を渡す
+        // 水平方向の速度の大きさ（magnitude）を計算
         float MoveSpeed = new Vector3(player1RigidBody.velocity.x, 0, player1RigidBody.velocity.z).magnitude;
         animator.SetFloat("Walk", MoveSpeed);
+
+        // ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
     }
 
     void Update()
@@ -175,6 +181,7 @@ public class Player1Script : MonoBehaviour
             if (gameObject.tag == "Rock")
             {
                 flags[1] = 1;
+                Debug.Log("aaaaaaaaaaaaa");
                 audioSource.PlayOneShot(RockSound);
             }
             if (gameObject.tag == "Scissors")
@@ -200,7 +207,7 @@ public class Player1Script : MonoBehaviour
             (gameObject.tag == "Scissors" && other.gameObject.tag == "Rock"))
         {
             flags[4] = 1;
-            audioSource.PlayOneShot(LoseSound);
+            //audioSource.PlayOneShot(LoseSound);
             animator.SetInteger(animations[4], flags[4]);
             StopFlag = 1;
             respron = 1;
@@ -210,7 +217,7 @@ public class Player1Script : MonoBehaviour
         //じゃんけんでドローになるときの処理
         else if (gameObject.tag == other.gameObject.tag)
         {
-            audioSource.PlayOneShot(DrawSound);
+            //audioSource.PlayOneShot(DrawSound);
             flags[0] = 1;
             animator.SetInteger(animations[0], flags[0]);
             StopFlag = 1;
