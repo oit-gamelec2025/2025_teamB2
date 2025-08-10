@@ -1,29 +1,40 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
- 
+
 public class CubeMove : MonoBehaviour
 {
-    private float speed = 10.0f;
-    private bool flag;
-    [SerializeField] Transform pointA;
-    [SerializeField] Transform pointB;
- 
-    void Update()
+    private bool flag = true;
+    public Rigidbody rb;
+    public float forceAmount = 10f;
+
+    void Start()
     {
-        if(flag)
-            transform.position = Vector3.MoveTowards(transform.position, pointB.position, speed * Time.deltaTime);
-        
-        else if(!flag)
-            transform.position = Vector3.MoveTowards(transform.position, pointA.position, speed * Time.deltaTime);
+        rb = GetComponent<Rigidbody>();
     }
- 
-    void OnTriggerEnter(Collider other)
+
+    void FixedUpdate()
     {
-        if (other.gameObject.name == "PointA")
-            flag = true;
-        
-        else if (other.gameObject.name == "PointB")
+        if (flag)
+        {
+            // 上方向へ連続的に力を加える
+            rb.AddForce(Vector3.up * forceAmount);
+        }
+        else
+        {
+            // 下方向へ連続的に力を加える
+            rb.AddForce(Vector3.down * forceAmount);
+        }
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.tag == "PositionA")
+        {
             flag = false;
+            Debug.Log("UP");
+        }
+        else if (other.gameObject.tag == "PositionB")
+        { 
+            flag = true;
+        }   
     }
 }
