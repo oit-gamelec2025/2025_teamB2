@@ -100,17 +100,15 @@ public class GameManager : MonoBehaviour
         {
             if(score01 > score02)
             {
-                Win_1.gameObject.SetActive(true);
-                Lose_2.gameObject.SetActive(true);
+                SceneManager.LoadScene("1PWinEnd");
             }
             else if(score01 < score02)
             {
-                Win_2.gameObject.SetActive(true);
-                Lose_1.gameObject.SetActive(true);
+                SceneManager.LoadScene("2PWinEnd");
             }
             else
             {
-                Draw.gameObject.SetActive(true);
+                SceneManager.LoadScene("DrawEnd");
             }
         }
         if(totaltime < 59)
@@ -125,6 +123,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("設定された手：グー");
         Players[0].gameObject.tag = "Rock";
         totaltime = 61;
+        timeflag = 1;
         StartText.SetActive(true);
         Player1UI[0].SetActive(false);
         Player1UI[1].SetActive(false);
@@ -140,6 +139,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("設定された手：チョキ");
         Players[0].gameObject.tag = "Scissors";
         totaltime = 61;
+        timeflag = 1;
         StartText.SetActive(true);
         Player1UI[0].SetActive(false);
         Player1UI[1].SetActive(false);
@@ -155,6 +155,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("設定された手：パー");
         Players[0].gameObject.tag = "Paper";
         totaltime = 61;
+        timeflag = 1;
         StartText.SetActive(true);
         Player1UI[0].SetActive(false);
         Player1UI[1].SetActive(false);

@@ -98,7 +98,7 @@ public class Player2Script : MonoBehaviour
         // ▼▼▼【ここからが修正箇所です】▼▼▼
 
         // スティックの入力(moveInput)を、XZ平面の3Dベクトルに変換
-        Vector3 move = new Vector3(moveInput.x, 0f, moveInput.y);
+        Vector3 move = new Vector3(-moveInput.x, 0f, -moveInput.y);
 
         // スティックがわずかでも倒されている場合のみ処理
         if (move.magnitude > 0.1f) // 0.1fはデッドゾーン。スティックの遊びを無視する閾値

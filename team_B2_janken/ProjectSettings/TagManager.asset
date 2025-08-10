@@ -11,6 +11,8 @@ TagManager:
   - Hand_Scissors
   - Hand_Paper
   - Hand_Rock
+  - PositionB
+  - PositionA
   layers:
   - Default
   - TransparentFX
