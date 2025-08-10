@@ -1,9 +1,19 @@
 using UnityEngine;
 using UnityEngine.InputSystem; // 新Input System（現在未使用）
 using UnityEngine.UI;
+using System.Collections;
+using System.Collections.Generic;
 
 public class Player1Script : MonoBehaviour
 {
+    //SE
+    private AudioSource audioSource;
+    public AudioClip RockSound;
+    public AudioClip ScissorsSound;
+    public AudioClip PaperSound;
+    public AudioClip LoseSound;
+    public AudioClip DrawSound;
+
     //プレイヤー操作関連変数
     Rigidbody player1RigidBody;
     public GameObject Camera;
@@ -39,6 +49,8 @@ public class Player1Script : MonoBehaviour
         {
             gameManagerScript = gameManager.GetComponent<GameManager>();
         }
+
+        audioSource = gameObject.AddComponent<AudioSource>(); //変数「audioSource」にAudioSourceコンポネントを入れます
     }
 
     // Rigidbodyを扱う処理はFixedUpdateで行うのが推奨されます
@@ -160,9 +172,21 @@ public class Player1Script : MonoBehaviour
             (gameObject.tag == "Paper" && other.gameObject.tag == "Rock"))
         {
             gameManagerScript.AddScore_1(1);
-            if (gameObject.tag == "Rock") flags[1] = 1;
-            if (gameObject.tag == "Scissors") flags[2] = 1;
-            if (gameObject.tag == "Paper") flags[3] = 1;
+            if (gameObject.tag == "Rock")
+            {
+                flags[1] = 1;
+                audioSource.PlayOneShot(RockSound);
+            }
+            if (gameObject.tag == "Scissors")
+            {
+                flags[2] = 1;
+                audioSource.PlayOneShot(ScissorsSound);
+            }
+            if (gameObject.tag == "Paper")
+            {
+                flags[3] = 1;
+                audioSource.PlayOneShot(PaperSound);
+            }
 
             for (int i = 1; i < 4; i++) animator.SetInteger(animations[i], flags[i]);
 
@@ -176,6 +200,7 @@ public class Player1Script : MonoBehaviour
             (gameObject.tag == "Scissors" && other.gameObject.tag == "Rock"))
         {
             flags[4] = 1;
+            audioSource.PlayOneShot(LoseSound);
             animator.SetInteger(animations[4], flags[4]);
             StopFlag = 1;
             respron = 1;
@@ -185,6 +210,7 @@ public class Player1Script : MonoBehaviour
         //じゃんけんでドローになるときの処理
         else if (gameObject.tag == other.gameObject.tag)
         {
+            audioSource.PlayOneShot(DrawSound);
             flags[0] = 1;
             animator.SetInteger(animations[0], flags[0]);
             StopFlag = 1;
