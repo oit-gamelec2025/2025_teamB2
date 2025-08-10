@@ -4,6 +4,14 @@ using UnityEngine.UI;
 
 public class Player2Script : MonoBehaviour
 {
+    //SE
+    private AudioSource audioSource;
+    public AudioClip RockSound;
+    public AudioClip ScissorsSound;
+    public AudioClip PaperSound;
+    public AudioClip LoseSound;
+    public AudioClip DrawSound;
+
     //プレイヤー操作関連変数
     Rigidbody player2RigidBody;
     public GameObject Camera;
@@ -39,6 +47,8 @@ public class Player2Script : MonoBehaviour
         {
             gameManagerScript = gameManager.GetComponent<GameManager>();
         }
+
+        audioSource = gameObject.AddComponent<AudioSource>(); //変数「audioSource」にAudioSourceコンポネントを入れます
     }
 
     // Rigidbodyを扱う処理はFixedUpdateで行うのが推奨されます
@@ -160,9 +170,21 @@ public class Player2Script : MonoBehaviour
             (gameObject.tag == "Paper" && other.gameObject.tag == "Rock"))
         {
             gameManagerScript.AddScore_2(1);
-            if (gameObject.tag == "Rock") flags[1] = 1;
-            if (gameObject.tag == "Scissors") flags[2] = 1;
-            if (gameObject.tag == "Paper") flags[3] = 1;
+            if (gameObject.tag == "Rock")
+            {
+                flags[1] = 1;
+                audioSource.PlayOneShot(RockSound);
+            }
+            if (gameObject.tag == "Scissors")
+            {
+                flags[2] = 1;
+                audioSource.PlayOneShot(ScissorsSound);
+            }
+            if (gameObject.tag == "Paper")
+            {
+                flags[3] = 1;
+                audioSource.PlayOneShot(PaperSound);
+            }
 
             for (int i = 1; i < 4; i++) animator.SetInteger(animations[i], flags[i]);
 
@@ -176,6 +198,7 @@ public class Player2Script : MonoBehaviour
             (gameObject.tag == "Scissors" && other.gameObject.tag == "Rock"))
         {
             flags[4] = 1;
+            audioSource.PlayOneShot(LoseSound);
             animator.SetInteger(animations[4], flags[4]);
             StopFlag = 1;
             respron = 1;
@@ -186,6 +209,7 @@ public class Player2Script : MonoBehaviour
         else if (gameObject.tag == other.gameObject.tag)
         {
             flags[0] = 1;
+            audioSource.PlayOneShot(DrawSound);
             animator.SetInteger(animations[0], flags[0]);
             StopFlag = 1;
             Debug.Log("Draw");
