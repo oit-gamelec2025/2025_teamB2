@@ -45,6 +45,11 @@ public class Player1Script : MonoBehaviour
     float stoptime = 1f;
     float restoptime = 0f;
 
+    //アイテム時間
+    float Itemtime = 0f;
+    float reItemtime = 0f;
+    int ShieldFlag = 0;
+    
     //GameManagerと連携
     public GameObject gameManager;
     GameManager gameManagerScript; // GameManagerのスクリプトをキャッシュする変数
@@ -160,8 +165,19 @@ public class Player1Script : MonoBehaviour
             }
         }
 
-        //カメラ操作
-
+        if(Itemtime > 0)
+        {
+            Itemtime -= Time.deltaTime;
+            reItemtime = (int)Itemtime;
+            if (reItemtime > 0)
+            {
+                speed = 35.0f;
+            }
+            else
+            {
+                speed = 20.0f;
+            }
+        }
     }
 
 
@@ -207,11 +223,18 @@ public class Player1Script : MonoBehaviour
             (gameObject.tag == "Paper" && other.gameObject.tag == "Scissors") ||
             (gameObject.tag == "Scissors" && other.gameObject.tag == "Rock"))
         {
-            flags[4] = 1;
-            animator.SetInteger(animations[4], flags[4]);
-            StopFlag = 1;
-            respron = 1;
-            Debug.Log("Lose");
+            if (ShieldFlag == 0)
+            {
+                flags[4] = 1;
+                animator.SetInteger(animations[4], flags[4]);
+                StopFlag = 1;
+                respron = 1;
+                Debug.Log("Lose");
+            }
+            else
+            {
+                ShieldFlag = 0;
+            }
         }
 
         //じゃんけんでドローになるときの処理
@@ -240,6 +263,18 @@ public class Player1Script : MonoBehaviour
         if (other.gameObject.tag == "Hand_Paper")
         {
             gameManagerScript.ChangePaper01();
+        }
+        if (other.gameObject.tag == "Speed")
+        {
+            Itemtime = 5f;
+        }
+        if (other.gameObject.tag == "Shield")
+        {
+            ShieldFlag = 1;
+        }
+        if (other.gameObject.tag == "Camera")
+        {
+            Camera.SetActive(true);
         }
     }
 

@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
 {
     public GameObject[] Players = new GameObject[] {};
     public GameObject[] Hands = new GameObject[] { };
+    public GameObject[] ItemPlanes = new GameObject[] { };
+    public GameObject[] Items = new GameObject[] { };
     public GameObject StartText;
 
     string[] hands = new string[] { "Rock", "Scissors", "Paper" };
@@ -30,7 +32,13 @@ public class GameManager : MonoBehaviour
     int score02 = 0;
     public Text ScoreText_2;
 
-    //自分の手
+    //アイテム
+    int ItemFlag = 0;
+    int Plane = 0;
+    int Item = 0;
+    // 0〜5のリストを作る
+    List<int> itemIndices = new List<int> { 0, 1, 2, 3, 4, 5 };
+
 
     //制限時間
     float totaltime = 6; //鬼ごっこが始まる前にも好きに移動するタイムがあるから
@@ -118,6 +126,35 @@ public class GameManager : MonoBehaviour
         if(totaltime < 119)
         {
             StartText.SetActive(false);
+        }
+        if((retotaltime%30) == 0)
+        {
+            if(ItemFlag == 0)
+            {
+                ItemFlag = 1;
+
+                for (int i = 0; i < itemIndices.Count; i++)
+                {
+                    int randIndex = Random.Range(i, itemIndices.Count);
+                    int temp = itemIndices[i];
+                    itemIndices[i] = itemIndices[randIndex];
+                    itemIndices[randIndex] = temp;
+                }
+
+                // i=0〜4までPlaneに対応させて配置
+                for (int i = 0; i < 5; i++)
+                {
+                    int item = itemIndices[i]; // 被らないランダム値
+                    Items[item].transform.position = ItemPlanes[i].transform.position;
+                }
+
+                int leftoverItem = itemIndices[5];
+                Items[leftoverItem].transform.position = Vector3.zero;
+            }
+        }
+        if(retotaltime == 110 || retotaltime == 80 || retotaltime == 50)
+        {
+            ItemFlag = 0;
         }
     }
 

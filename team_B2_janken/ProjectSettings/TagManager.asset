@@ -13,6 +13,9 @@ TagManager:
   - Hand_Rock
   - PositionB
   - PositionA
+  - Shield
+  - Camera
+  - Speed
   layers:
   - Default
   - TransparentFX
