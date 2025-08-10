@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem; // 新Input System（現在未使用）
 using UnityEngine.UI;
+using System.Collections;
 
 public class Player2Script : MonoBehaviour
 {
@@ -9,8 +10,7 @@ public class Player2Script : MonoBehaviour
     public AudioClip RockSound;
     public AudioClip ScissorsSound;
     public AudioClip PaperSound;
-    //public AudioClip LoseSound;
-    //public AudioClip DrawSound;
+    public AudioClip DrawSound;
 
     //プレイヤー操作関連変数
     Rigidbody player2RigidBody;
@@ -20,7 +20,7 @@ public class Player2Script : MonoBehaviour
     int respron = 0;
 
     //移動関係
-    private Vector2 moveInput; // ★これを追加: スティックの入力値を保持する
+    private Vector2 moveInput; // ★これを追加: スティックの入力値を保持
 
     private PlayerInput playerInput;
     public enum PlayerIndex
@@ -55,6 +55,7 @@ public class Player2Script : MonoBehaviour
         animator = GetComponent<Animator>(); // Animatorコンポーネント取得
 
         playerInput = GetComponent<PlayerInput>(); //コントローラー
+
 
         // パフォーマンス向上のため、GameManagerのスクリプトを一度だけ取得してキャッシュしておく
         if (gameManager != null)
@@ -161,6 +162,8 @@ public class Player2Script : MonoBehaviour
                 }
             }
         }
+
+        //カメラ操作
     }
 
 
@@ -182,7 +185,7 @@ public class Player2Script : MonoBehaviour
             if (gameObject.tag == "Rock")
             {
                 flags[1] = 1;
-                audioSource.PlayOneShot(RockSound);
+                StartCoroutine(PlayRockSoundMultipleTimes(5, 0.5f));
             }
             if (gameObject.tag == "Scissors")
             {
@@ -207,7 +210,6 @@ public class Player2Script : MonoBehaviour
             (gameObject.tag == "Scissors" && other.gameObject.tag == "Rock"))
         {
             flags[4] = 1;
-            //audioSource.PlayOneShot(LoseSound);
             animator.SetInteger(animations[4], flags[4]);
             StopFlag = 1;
             respron = 1;
@@ -218,7 +220,7 @@ public class Player2Script : MonoBehaviour
         else if (gameObject.tag == other.gameObject.tag)
         {
             flags[0] = 1;
-            //audioSource.PlayOneShot(DrawSound);
+            audioSource.PlayOneShot(DrawSound);
             animator.SetInteger(animations[0], flags[0]);
             StopFlag = 1;
             Debug.Log("Draw");
@@ -240,6 +242,14 @@ public class Player2Script : MonoBehaviour
         if (other.gameObject.tag == "Hand_Paper")
         {
             gameManagerScript.ChangePaper02();
+        }
+    }
+    private IEnumerator PlayRockSoundMultipleTimes(int count, float interval)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            audioSource.PlayOneShot(RockSound);
+            yield return new WaitForSeconds(interval); // 次の再生までの間隔
         }
     }
 }

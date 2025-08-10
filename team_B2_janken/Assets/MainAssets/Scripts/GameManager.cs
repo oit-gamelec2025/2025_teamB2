@@ -6,9 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject[] Player1UI = new GameObject[] { };
-    public GameObject[] Player2UI = new GameObject[] { };
     public GameObject[] Players = new GameObject[] {};
+    public GameObject[] Hands = new GameObject[] { };
     public GameObject StartText;
 
     string[] hands = new string[] { "Rock", "Scissors", "Paper" };
@@ -25,21 +24,16 @@ public class GameManager : MonoBehaviour
     public GameObject Scissors02;
     public GameObject Paper02;
 
-
     //UIの変数
     int score01 = 0;
     public Text ScoreText_1;
     int score02 = 0;
     public Text ScoreText_2;
-    public Text Win_1;
-    public Text Lose_1;
-    public Text Win_2;
-    public Text Lose_2;
-    public Text Draw;
 
+    //自分の手
 
     //制限時間
-    float totaltime = 6;
+    float totaltime = 6; //鬼ごっこが始まる前にも好きに移動するタイムがあるから
     int retotaltime = 0;
     public Text TimerText;
     int ChoseFlag = 0;
@@ -66,33 +60,43 @@ public class GameManager : MonoBehaviour
             if(retotaltime == 0 && ChoseFlag == 0)
             {
                 ChoseFlag = 1;
-                totaltime = 61;
+                totaltime = 121;
                 retotaltime = 1;
                 timeflag = 1;
                 StartText.SetActive(true);
-                Player1UI[0].SetActive(false);
-                Player1UI[1].SetActive(false);
-                Player1UI[2].SetActive(false);
-                Player2UI[0].SetActive(false);
-                Player2UI[1].SetActive(false);
-                Player2UI[2].SetActive(false);
-                int num = Random.Range(0, 3); // 0以上10未満の整数（0〜9）
-                Players[0].gameObject.tag = hands[num];
-                Players[1].gameObject.tag = hands[num];
-                if(num == 0)
+                int hand01 = Random.Range(0, 3); // 0以上10未満の整数（0〜9）
+                int hand02 = Random.Range(0, 3);
+                Players[0].gameObject.tag = hands[hand01];
+                Players[1].gameObject.tag = hands[hand02];
+                if(hand01 == 0)
                 {
                     Rock01.SetActive(true);
-                    Rock02.SetActive(true);
+                    Hands[0].SetActive(true);
                 }
-                else if(num == 1)
+                else if(hand01 == 1)
                 {
                     Scissors01.SetActive(true);
-                    Scissors02.SetActive(true);
+                    Hands[1].SetActive(true);
                 }
-                else if(num == 2)
+                else if(hand01 == 2)
                 {
                     Paper01.SetActive(true);
+                    Hands[2].SetActive(true);
+                }
+                if (hand02 == 0)
+                {
+                    Rock02.SetActive(true);
+                    Hands[3].SetActive(true);
+                }
+                else if (hand02 == 1)
+                {
+                    Scissors02.SetActive(true);
+                    Hands[4].SetActive(true);
+                }
+                else if (hand02 == 2)
+                {
                     Paper02.SetActive(true);
+                    Hands[5].SetActive(true);
                 }
             }
         }
@@ -111,96 +115,10 @@ public class GameManager : MonoBehaviour
                 SceneManager.LoadScene("DrawEnd");
             }
         }
-        if(totaltime < 59)
+        if(totaltime < 119)
         {
             StartText.SetActive(false);
         }
-    }
-
-    //Player1 UI
-    public void OnRock01()
-    {
-        Debug.Log("設定された手：グー");
-        Players[0].gameObject.tag = "Rock";
-        totaltime = 61;
-        timeflag = 1;
-        StartText.SetActive(true);
-        Player1UI[0].SetActive(false);
-        Player1UI[1].SetActive(false);
-        Player1UI[2].SetActive(false);
-        Rock01.SetActive(true);
-        Scissors01.SetActive(false);
-        Paper01.SetActive(false);
-        ChoseFlag = 1;
-    }
-
-    public void OnScissors01()
-    {
-        Debug.Log("設定された手：チョキ");
-        Players[0].gameObject.tag = "Scissors";
-        totaltime = 61;
-        timeflag = 1;
-        StartText.SetActive(true);
-        Player1UI[0].SetActive(false);
-        Player1UI[1].SetActive(false);
-        Player1UI[2].SetActive(false);
-        Rock01.SetActive(false);
-        Scissors01.SetActive(true);
-        Paper01.SetActive(false);
-        ChoseFlag = 1;
-    }
-
-    public void OnPaper01()
-    {
-        Debug.Log("設定された手：パー");
-        Players[0].gameObject.tag = "Paper";
-        totaltime = 61;
-        timeflag = 1;
-        StartText.SetActive(true);
-        Player1UI[0].SetActive(false);
-        Player1UI[1].SetActive(false);
-        Player1UI[2].SetActive(false);
-        Rock01.SetActive(false);
-        Scissors01.SetActive(false);
-        Paper01.SetActive(true);
-        ChoseFlag = 1;
-    }
-
-    //Player2 UI
-    public void OnRock02()
-    {
-        Debug.Log("設定された手：グー");
-        Players[1].gameObject.tag = "Rock";
-        Player2UI[0].SetActive(false);
-        Player2UI[1].SetActive(false);
-        Player2UI[2].SetActive(false);
-        Rock02.SetActive(true);
-        Scissors02.SetActive(false);
-        Paper02.SetActive(false);
-    }
-
-    public void OnScissors02()
-    {
-        Debug.Log("設定された手：チョキ");
-        Players[1].gameObject.tag = "Scissors";
-        Player2UI[0].SetActive(false);
-        Player2UI[1].SetActive(false);
-        Player2UI[2].SetActive(false);
-        Rock02.SetActive(false);
-        Scissors02.SetActive(true);
-        Paper02.SetActive(false);
-    }
-
-    public void OnPaper02()
-    {
-        Debug.Log("設定された手：パー");
-        Players[1].gameObject.tag = "Paper";
-        Player2UI[0].SetActive(false);
-        Player2UI[1].SetActive(false);
-        Player2UI[2].SetActive(false);
-        Rock02.SetActive(false);
-        Scissors02.SetActive(false);
-        Paper02.SetActive(true);
     }
 
     //プレイヤー１のアイテム
@@ -211,6 +129,9 @@ public class GameManager : MonoBehaviour
         Rock01.SetActive(true);
         Scissors01.SetActive(false);
         Paper01.SetActive(false);
+        Hands[0].SetActive(true);
+        Hands[1].SetActive(false);
+        Hands[2].SetActive(false);
     }
 
     public void ChangeScissors01()
@@ -220,6 +141,9 @@ public class GameManager : MonoBehaviour
         Rock01.SetActive(false);
         Scissors01.SetActive(true);
         Paper01.SetActive(false);
+        Hands[0].SetActive(false);
+        Hands[1].SetActive(true);
+        Hands[2].SetActive(false);
     }
 
     public void ChangePaper01()
@@ -229,6 +153,9 @@ public class GameManager : MonoBehaviour
         Rock01.SetActive(false);
         Scissors01.SetActive(false);
         Paper01.SetActive(true);
+        Hands[0].SetActive(false);
+        Hands[1].SetActive(false);
+        Hands[2].SetActive(true);
     }
 
     //プレイヤー２のアイテム
@@ -239,6 +166,9 @@ public class GameManager : MonoBehaviour
         Rock02.SetActive(true);
         Scissors02.SetActive(false);
         Paper02.SetActive(false);
+        Hands[3].SetActive(true);
+        Hands[4].SetActive(false);
+        Hands[5].SetActive(false);
     }
 
     public void ChangeScissors02()
@@ -248,6 +178,9 @@ public class GameManager : MonoBehaviour
         Rock02.SetActive(false);
         Scissors02.SetActive(true);
         Paper02.SetActive(false);
+        Hands[3].SetActive(false);
+        Hands[4].SetActive(true);
+        Hands[5].SetActive(false);
     }
 
     public void ChangePaper02()
@@ -257,6 +190,9 @@ public class GameManager : MonoBehaviour
         Rock02.SetActive(false);
         Scissors02.SetActive(false);
         Paper02.SetActive(true);
+        Hands[3].SetActive(false);
+        Hands[4].SetActive(false);
+        Hands[5].SetActive(true);
     }
 
     public void AddScore_1(int num)

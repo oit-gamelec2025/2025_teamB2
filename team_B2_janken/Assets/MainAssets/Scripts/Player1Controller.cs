@@ -14,8 +14,7 @@ public class Player1Script : MonoBehaviour
     public AudioClip RockSound;
     public AudioClip ScissorsSound;
     public AudioClip PaperSound;
-    //public AudioClip LoseSound;
-    //public AudioClip DrawSound;
+    public AudioClip DrawSound;
 
     //プレイヤー操作関連変数
     Rigidbody player1RigidBody;
@@ -160,6 +159,9 @@ public class Player1Script : MonoBehaviour
                 }
             }
         }
+
+        //カメラ操作
+
     }
 
 
@@ -181,8 +183,7 @@ public class Player1Script : MonoBehaviour
             if (gameObject.tag == "Rock")
             {
                 flags[1] = 1;
-                Debug.Log("aaaaaaaaaaaaa");
-                audioSource.PlayOneShot(RockSound);
+                StartCoroutine(PlayRockSoundMultipleTimes(5, 0.5f));
             }
             if (gameObject.tag == "Scissors")
             {
@@ -207,7 +208,6 @@ public class Player1Script : MonoBehaviour
             (gameObject.tag == "Scissors" && other.gameObject.tag == "Rock"))
         {
             flags[4] = 1;
-            //audioSource.PlayOneShot(LoseSound);
             animator.SetInteger(animations[4], flags[4]);
             StopFlag = 1;
             respron = 1;
@@ -217,7 +217,7 @@ public class Player1Script : MonoBehaviour
         //じゃんけんでドローになるときの処理
         else if (gameObject.tag == other.gameObject.tag)
         {
-            //audioSource.PlayOneShot(DrawSound);
+            audioSource.PlayOneShot(DrawSound);
             flags[0] = 1;
             animator.SetInteger(animations[0], flags[0]);
             StopFlag = 1;
@@ -240,6 +240,15 @@ public class Player1Script : MonoBehaviour
         if (other.gameObject.tag == "Hand_Paper")
         {
             gameManagerScript.ChangePaper01();
+        }
+    }
+
+    private IEnumerator PlayRockSoundMultipleTimes(int count, float interval)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            audioSource.PlayOneShot(RockSound);
+            yield return new WaitForSeconds(interval); // 次の再生までの間隔
         }
     }
 }
