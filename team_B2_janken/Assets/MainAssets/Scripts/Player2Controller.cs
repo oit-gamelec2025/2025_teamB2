@@ -18,6 +18,7 @@ public class Player2Script : MonoBehaviour
     public GameObject Born; //プレイヤー方向
     float speed = 20.0f;
     int respron = 0;
+
     //移動関係
     private Vector2 moveInput; // ★これを追加: スティックの入力値を保持する
 
@@ -28,6 +29,7 @@ public class Player2Script : MonoBehaviour
         Player2 = 1  // 2P
     };
     [Header("プレイヤー番号"), SerializeField] PlayerIndex playerIndex = PlayerIndex.Player2;
+    
 
     //あいこで転んでから起き上がりの時間
     float totaltime = 0f;
@@ -51,7 +53,8 @@ public class Player2Script : MonoBehaviour
     {
         player2RigidBody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>(); // Animatorコンポーネント取得
-        playerInput = GetComponent<PlayerInput>();
+
+        playerInput = GetComponent<PlayerInput>(); //コントローラー
 
         // パフォーマンス向上のため、GameManagerのスクリプトを一度だけ取得してキャッシュしておく
         if (gameManager != null)
@@ -61,10 +64,11 @@ public class Player2Script : MonoBehaviour
 
         audioSource = gameObject.AddComponent<AudioSource>(); //変数「audioSource」にAudioSourceコンポネントを入れます
 
+        
         var gamepads = Gamepad.all;
         var index = (int)playerIndex;
 
-        if (gamepads.Count <= index)
+        if (gamepads.Count < index)
         {
             Debug.LogWarning($"プレイヤーに割り当てるゲームコントローラが見つかりません {index}");
             return;
