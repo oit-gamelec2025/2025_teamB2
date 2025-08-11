@@ -15,6 +15,9 @@ public class Player1Script : MonoBehaviour
     public AudioClip ScissorsSound;
     public AudioClip PaperSound;
     public AudioClip DrawSound;
+    public AudioClip SpeedUP;
+    public AudioClip ShieldSound;
+    public AudioClip ChangeSound;
 
     //プレイヤー操作関連変数
     Rigidbody player1RigidBody;
@@ -45,10 +48,11 @@ public class Player1Script : MonoBehaviour
     float stoptime = 1f;
     float restoptime = 0f;
 
-    //アイテム時間
+    //アイテム
     float Itemtime = 0f;
     float reItemtime = 0f;
     int ShieldFlag = 0;
+    public GameObject ShiledTag;
     
     //GameManagerと連携
     public GameObject gameManager;
@@ -79,6 +83,8 @@ public class Player1Script : MonoBehaviour
 
         // 接続されているコントローラーをプレイヤー入力へ割り当て
         playerInput.SwitchCurrentControlScheme(gamepads[index]);
+
+        ShiledTag.SetActive(false);
     }
 
     public void OnMove(InputValue value)
@@ -233,6 +239,7 @@ public class Player1Script : MonoBehaviour
             }
             else
             {
+                ShiledTag.SetActive(false);
                 ShieldFlag = 0;
             }
         }
@@ -255,22 +262,28 @@ public class Player1Script : MonoBehaviour
         if (other.gameObject.tag == "Hand_Rock")
         {
             gameManagerScript.ChangeRock01();
+            audioSource.PlayOneShot(ChangeSound);
         }
         if (other.gameObject.tag == "Hand_Scissors")
         {
             gameManagerScript.ChangeScissors01();
+            audioSource.PlayOneShot(ChangeSound);
         }
         if (other.gameObject.tag == "Hand_Paper")
         {
             gameManagerScript.ChangePaper01();
+            audioSource.PlayOneShot(ChangeSound);
         }
         if (other.gameObject.tag == "Speed")
         {
             Itemtime = 5f;
+            audioSource.PlayOneShot(SpeedUP);
         }
         if (other.gameObject.tag == "Shield")
         {
             ShieldFlag = 1;
+            ShiledTag.SetActive(true);
+            audioSource.PlayOneShot(ShieldSound);
         }
         if (other.gameObject.tag == "Camera")
         {
