@@ -51,7 +51,7 @@ public class Player1Script : MonoBehaviour
     //アイテム
     float Itemtime = 0f;
     float reItemtime = 0f;
-    int ShieldFlag = 0;
+    public int ShieldFlag = 0;
     public GameObject ShiledTag;
     
     //GameManagerと連携

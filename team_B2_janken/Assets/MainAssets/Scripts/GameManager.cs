@@ -234,14 +234,24 @@ public class GameManager : MonoBehaviour
 
     public void AddScore_1(int num)
     {
-        score01 += num;
-        ScoreText_1.text = score01.ToString();
+        // player2がGameObjectなら
+        int shieldFlag2 = Players[1].GetComponent<Player2Script>().ShieldFlag;
+        if (shieldFlag2 != 1)
+        {
+            score01 += num;
+            ScoreText_1.text = score01.ToString();
+        }
     }
 
     public void AddScore_2(int num)
     {
-        score02 += num;
-        ScoreText_2.text = score02.ToString();
+        // player1がGameObjectなら
+        int shieldFlag1 = Players[0].GetComponent<Player1Script>().ShieldFlag;
+        if (shieldFlag1 != 1)
+        {
+            score02 += num;
+            ScoreText_2.text = score02.ToString();
+        }
     }
 
     public void Resporn_01()
