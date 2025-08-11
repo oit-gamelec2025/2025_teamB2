@@ -11,6 +11,9 @@ public class Player2Script : MonoBehaviour
     public AudioClip ScissorsSound;
     public AudioClip PaperSound;
     public AudioClip DrawSound;
+    public AudioClip SpeedUP;
+    public AudioClip ShieldSound;
+    public AudioClip ChangeSound;
 
     //プレイヤー操作関連変数
     Rigidbody player2RigidBody;
@@ -45,10 +48,11 @@ public class Player2Script : MonoBehaviour
     float stoptime = 1f;
     float restoptime = 0f;
 
-    //アイテム時間
+    //アイテム
     float Itemtime = 0f;
     float reItemtime = 0f;
     int ShieldFlag = 0;
+    public GameObject ShiledTag;
 
     //GameManagerと連携
     public GameObject gameManager;
@@ -56,6 +60,8 @@ public class Player2Script : MonoBehaviour
 
     void Start()
     {
+        ShiledTag.SetActive(false);
+
         player2RigidBody = GetComponent<Rigidbody>();
         animator = GetComponent<Animator>(); // Animatorコンポーネント取得
 
@@ -82,6 +88,8 @@ public class Player2Script : MonoBehaviour
 
         // 接続されているコントローラーをプレイヤー入力へ割り当て
         playerInput.SwitchCurrentControlScheme(gamepads[index]);
+
+        
     }
 
     public void OnMove(InputValue value)
@@ -237,6 +245,7 @@ public class Player2Script : MonoBehaviour
             else
             {
                 ShieldFlag = 0;
+                ShiledTag.SetActive(false);
             }
         }
 
@@ -258,22 +267,28 @@ public class Player2Script : MonoBehaviour
         if (other.gameObject.tag == "Hand_Rock")
         {
             gameManagerScript.ChangeRock02();
+            audioSource.PlayOneShot(ChangeSound);
         }
         if (other.gameObject.tag == "Hand_Scissors")
         {
             gameManagerScript.ChangeScissors02();
+            audioSource.PlayOneShot(ChangeSound);
         }
         if (other.gameObject.tag == "Hand_Paper")
         {
             gameManagerScript.ChangePaper02();
+            audioSource.PlayOneShot(ChangeSound);
         }
         if (other.gameObject.tag == "Speed")
         {
             Itemtime = 5f;
+            audioSource.PlayOneShot(SpeedUP);
         }
         if (other.gameObject.tag == "Shield")
         {
             ShieldFlag = 1;
+            ShiledTag.SetActive(true);
+            audioSource.PlayOneShot(ShieldSound);
         }
         if (other.gameObject.tag == "Camera")
         {
