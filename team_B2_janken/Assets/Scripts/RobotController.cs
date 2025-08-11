@@ -43,6 +43,7 @@ public class RobotController : MonoBehaviour
     // Input Actionsファイルで、Dashアクションにバインドする
     public void OnDash(InputAction.CallbackContext context)
     {
+        Debug.Log("OnDash");
         // ロック中は突進を無効化
         if (isLocked)
         {

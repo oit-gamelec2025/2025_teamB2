@@ -4033,17 +4033,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cebc80d9af51bb4c86af841743c8a0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Player1UI:
-  - {fileID: 79030219}
-  - {fileID: 682695340}
-  - {fileID: 1672223774}
-  Player2UI:
-  - {fileID: 1709119116}
-  - {fileID: 712784136}
-  - {fileID: 1840997507}
   Players:
   - {fileID: 1911900941}
   - {fileID: 857849094}
+  Hands: []
+  ItemPlanes: []
+  Items: []
   StartText: {fileID: 408131487}
   Resporn01: {fileID: 1885802248}
   Resporn02: {fileID: 808590562}
@@ -4055,11 +4050,6 @@ MonoBehaviour:
   Paper02: {fileID: 1264698502}
   ScoreText_1: {fileID: 719562786}
   ScoreText_2: {fileID: 1620566424}
-  Win_1: {fileID: 610730390}
-  Lose_1: {fileID: 950199798}
-  Win_2: {fileID: 1959540139}
-  Lose_2: {fileID: 531754722}
-  Draw: {fileID: 212857588}
   TimerText: {fileID: 1954462863}
 --- !u!81 &666823023
 AudioListener:
@@ -5832,6 +5822,7 @@ GameObject:
   - component: {fileID: 857849101}
   - component: {fileID: 857849102}
   - component: {fileID: 857849103}
+  - component: {fileID: 857849104}
   m_Layer: 0
   m_Name: Player02
   m_TagString: Player
@@ -6070,10 +6061,31 @@ MonoBehaviour:
   RockSound: {fileID: 8300000, guid: f721d78b182b2024a8394f0a244d9ed7, type: 3}
   ScissorsSound: {fileID: 8300000, guid: e27f99997539e1542a95c6d0cb4ef447, type: 3}
   PaperSound: {fileID: 8300000, guid: 1e58a9d75b8dccf409a5317e73dca202, type: 3}
+  DrawSound: {fileID: 0}
+  SpeedUP: {fileID: 0}
+  ShieldSound: {fileID: 0}
+  ChangeSound: {fileID: 0}
   Camera: {fileID: 0}
   Born: {fileID: 871398127}
   playerIndex: 1
+  ShiledTag: {fileID: 0}
   gameManager: {fileID: 666823019}
+--- !u!114 &857849104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 857849094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7312ece3223ab2f48818bf0580d5a8d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashForce: 20
+  dashDuration: 0.2
+  dashCooldown: 1
+  dashButton: P2_Dash
 --- !u!1001 &871398126
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10964,6 +10976,7 @@ GameObject:
   - component: {fileID: 1911900946}
   - component: {fileID: 1911900947}
   - component: {fileID: 1911900948}
+  - component: {fileID: 1911900949}
   m_Layer: 0
   m_Name: Player01
   m_TagString: Player
@@ -11004,9 +11017,14 @@ MonoBehaviour:
   RockSound: {fileID: 8300000, guid: f721d78b182b2024a8394f0a244d9ed7, type: 3}
   ScissorsSound: {fileID: 8300000, guid: e27f99997539e1542a95c6d0cb4ef447, type: 3}
   PaperSound: {fileID: 8300000, guid: 1e58a9d75b8dccf409a5317e73dca202, type: 3}
+  DrawSound: {fileID: 0}
+  SpeedUP: {fileID: 0}
+  ShieldSound: {fileID: 0}
+  ChangeSound: {fileID: 0}
   Camera: {fileID: 0}
   Born: {fileID: 275156465}
   playerIndex: 0
+  ShiledTag: {fileID: 0}
   gameManager: {fileID: 666823019}
 --- !u!54 &1911900944
 Rigidbody:
@@ -11206,6 +11224,22 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1911900949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1911900941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 730b7dc9be2bc744fb103058645bf94f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashForce: 20
+  dashDuration: 0.2
+  dashCooldown: 1
+  dashButton: P1_Dash
 --- !u!4 &1917143555 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6208010189527666727, guid: 5fa5c6c96badfb04bba2d15215a8a7f4,
